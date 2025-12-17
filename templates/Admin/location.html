@@ -1,0 +1,64 @@
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+ <!-- View Location Button (aligned to the right) -->
+            <div class="d-flex justify-content-center mt-4">
+                <a href="{% url 'viewlocation' %}"
+                   onclick="return confirm('Do you want to view locations?')"
+                   class="btn btn-primary w-10">View Locations</a>
+            </div>
+            <br><br>
+            <!-- Card Container -->
+            <div class="card shadow-lg p-4 rounded">
+
+                <!-- Card Title -->
+                <h3 class="text-center mb-4">Add Location</h3>
+
+                <!-- Form -->
+                <form action="{% url 'location_process' %}" method="post">
+                    {% csrf_token %}
+
+                    <!-- District Name Dropdown -->
+                    <div class="form-group mb-4">
+                        <label for="districtid" class="form-label">Select District</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="bi bi-house-door"></i>
+                            </div>
+                            <select name="districtid" id="districtid" class="form-control" required>
+                                <option value="">Select District</option>
+                                {% for d in districts %}
+                                    <option value="{{d.districtid}}">{{d.districtname}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Location Name Field -->
+                    <div class="form-group mb-4">
+                        <label for="locationname" class="form-label">Location Name</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="bi bi-geo-alt"></i>
+                            </div>
+                            <input type="text" name="locationname" id="locationname" class="form-control" placeholder="Enter Location Name" required>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Add Location</button>
+                    </div>
+                </form>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+{% include 'Admin/footer.html' %}

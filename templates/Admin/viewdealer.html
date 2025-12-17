@@ -1,0 +1,115 @@
+{% load static %}
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+
+<div class="container mt-4">
+    <div class="card p-4 shadow-sm">
+        <h4 class="text-center mb-3">Dealer Information</h4>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label for="district" class="fw-bold">Select District</label>
+                <select name="districtid" id="district" class="form-control">
+                    <option value="">Select District</option>
+                    {% for d in district %}
+                    <option value="{{d.districtid}}">{{d.districtname}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="location" class="fw-bold">Select Location</label>
+                <select name="locationid" id="location" class="form-control">
+                    <option value="">Select Location</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4 p-3 shadow-sm">
+        <h5 class="text-center mb-3">Dealer List</h5>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>Dealer Name</th>
+                        <th>Email</th>
+                        <th>Contact No</th>
+                        <th>Delete</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+                <tbody id="dealers">
+                    <!-- Dealer data will load dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% include 'Admin/footer.html' %}
+
+
+
+        <script src="{% static 'Admin/jquery-3.7.1.min.js' %}"></script>
+        <script>
+            $(document).ready(function() {
+                //alert('haii');
+             $.ajaxSetup({
+                headers: { "X-CSRFToken": '{{csrf_token}}' }
+              });
+              $('#district').change(function () {
+                var districtid = $(this).val();
+                  //alert(districtid);
+                $.ajax({
+                  type: "POST",
+                  url: '{% url "filllocation" %}',
+                  data: { did: districtid },
+                  dataType: "json",
+                  success: function (data) {
+                    $('#location').empty();
+                      //alert("test");
+                      s = 1;
+                      var row = '<option value="">Select Location</option>';
+                      $('#location').append(row);
+                      $.each(data, function (key, val) {
+                      var id=val.locationid;
+                     
+                      var row = '<option value="'+val.locationid+'">'+val.locationname+'</option>';
+                      $('#location').append(row);
+                  });
+                  }
+                });
+              });
+
+              $('#location').change(function () {
+                var locationid = $(this).val();
+                  //alert(locationid);
+                $.ajax({
+                  type: "POST",
+                  url: '{% url "filldealer" %}',
+                  data: { lid: locationid },
+                  dataType: "json",
+                  success: function (data) {
+                    $('#dealers').empty();
+                      //alert("test");
+                      s = 1;
+                      $.each(data, function (key, val) {
+                      var id=val.dealerid;
+                      var deleteurl='{% url "deletedealer" 0 %}'.replace('0', id);
+                      var editurl='{% url "editdealer" 0 %}'.replace('0', id);
+                      var row = '<tr> <td>' + s++ + '</td>' +
+                                      '<td>' + val.dealername + '</td>'+
+                                      '<td>' + val.email + '</td>'+
+                                      '<td>' + val.contactno + '</td>'+
+                                      '<td class="text-danger"><a href=" ' + deleteurl +'">Delete</a></td>'+
+                                      '<td class="text-danger"><a href=" ' + editurl +'">Edit</a></td>'+
+
+                                '</tr>';
+                      $('#dealers').append(row);
+                  });
+                  }
+                });
+              });
+            });
+            </script>

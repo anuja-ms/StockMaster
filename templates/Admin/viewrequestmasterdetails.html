@@ -1,0 +1,173 @@
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<style>
+    body {
+        margin-top: 20px;
+        color: #484b51;
+    }
+    .text-secondary-d1 {
+        color: #728299!important;
+    }
+    .page-header {
+        margin: 0 0 1rem;
+        padding-bottom: 1rem;
+        padding-top: .5rem;
+        border-bottom: 1px dotted #e2e2e2;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .page-title {
+        font-size: 1.75rem;
+        font-weight: 300;
+    }
+    .bgc-default-tp1 {
+        background-color: rgba(121,169,197,.92)!important;
+    }
+</style>
+
+
+
+<div class="page-content container">
+    <div class="page-header text-blue-d2">
+        <h1 class="page-title text-secondary-d1">
+            Bill
+            <small class="page-info">
+                <i class="fa fa-angle-double-right text-80"></i>
+                ID: {{requestmaster.requestmasterid}}
+            </small>
+        </h1>
+    </div>
+
+    <div class="container px-0">
+        <div class="row mt-4">
+            <div class="col-12 col-lg-12">
+
+                <!-- Bill Content (Wrapped in Div for PDF Capture) -->
+                <div id="billContent">
+                    <hr class="row brc-default-l1 mx-n1 mb-4" />
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div>
+                                <span class="text-sm text-grey-m2 align-middle">From:</span>
+                                <span class="text-600 text-110 text-blue align-middle">{{requestmaster.dealerid.dealername}}</span>
+                            </div>
+                            <div class="text-grey-m2">
+                                <div class="my-1">
+                                    {{requestmaster.dealerid.email}}
+                                </div>
+                                <div class="my-1">
+                                    <i class="fa fa-phone fa-flip-horizontal text-secondary"></i>
+                                    <b class="text-600">{{requestmaster.dealerid.contactno}}</b>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
+                            <div class="text-grey-m2">
+                                <div class="mt-1 mb-2 text-secondary-m1 text-600 text-125">
+                                    Bill
+                                </div>
+                                <div class="my-2">
+                                    <i class="fa fa-circle text-blue-m2 text-xs mr-1"></i>
+                                    <span class="text-600 text-90">ID:</span> {{requestmaster.requestmasterid}}
+                                </div>
+                                <div class="my-2">
+                                    <i class="fa fa-circle text-blue-m2 text-xs mr-1"></i>
+                                    <span class="text-600 text-90">Delivery Date:</span> {{requestmaster.deliverydate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="row text-600 text-white bgc-default-tp1 py-25">
+                            <div class="d-none d-sm-block col-1">#</div>
+                            <div class="col-9 col-sm-5">Product Name</div>
+                            <div class="d-none d-sm-block col-4 col-sm-2">Requested Qty</div>
+                            <div class="d-none d-sm-block col-sm-2">Dealer Qty</div>
+                            <div class="col-2">Dealer Amount</div>
+                        </div>
+
+                        <div class="text-95 text-secondary-d3">
+                            {% for res in result %}
+                            <div class="row mb-2 mb-sm-0 py-25">
+                                <div class="d-none d-sm-block col-1">{{forloop.counter}}</div>
+                                <div class="col-9 col-sm-5">{{res.productid.productname}}</div>
+                                <div class="d-none d-sm-block col-2">{{res.quantity}}</div>
+                                <div class="d-none d-sm-block col-2 text-95">{{res.dealerquantity}}</div>
+                                <div class="col-2 text-secondary-d2">{{res.price}}</div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="row border-b-2 brc-default-l2"></div>
+
+                        <div class="row mt-3">
+                            <div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
+                                <div class="row my-2 align-items-center bgc-primary-l3 p-2">
+                                    <div class="col-7 text-right">
+                                        Total Amount
+                                    </div>
+                                    <div class="col-5">
+                                        <span class="text-150 text-success-d3 opacity-2">Rs.{{grandtotal}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div>
+                            <span class="text-secondary-d1 text-105">Thank you for your business</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of Bill Content -->
+                <br><br>
+<button id="downloadBtn" onclick="downloadBillAsPDF()" class="btn btn-success">
+    <i class="fa fa-download"></i> Download Bill as PDF
+</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% include 'Admin/footer.html' %}
+<!-- Button to Download Bill as PDF -->
+
+<!-- Include JS Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- JavaScript to Generate PDF -->
+<script>
+function downloadBillAsPDF() {
+    let billElement = document.querySelector("#billContent");
+    let downloadButton = document.querySelector("#downloadBtn");
+
+    // Hide the button before capturing
+    downloadButton.style.display = "none";
+
+    html2canvas(billElement, { scale: 2 }).then(canvas => {
+        let imgData = canvas.toDataURL("image/png");
+        let { jsPDF } = window.jspdf;
+        let pdf = new jsPDF("p", "mm", "a4");
+
+        let imgWidth = 190;
+        let imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        pdf.addImage(imgData, "PNG", 10, 10, imgWidth, imgHeight);
+        pdf.save("Bill.pdf");
+
+        // Show the button again after capturing
+        downloadButton.style.display = "inline-block";
+    }).catch(error => {
+        console.error("PDF Generation Error:", error);
+    });
+}
+</script>

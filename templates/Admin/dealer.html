@@ -1,0 +1,133 @@
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+{% load static %}
+<style>
+    body {
+        background-color: #dcdcdc; /* Light gray-blue background */
+    }
+</style>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg p-4 rounded">
+                <h3 class="text-center mb-4">Dealer Registration</h3>
+                <form action="{% url 'dealer_process' %}" method="POST">
+                    {% csrf_token %}
+
+                    <div class="form-group mb-4">
+                        <label for="dealername" class="form-label">Name</label>
+                        <div class="input-group">
+                            <div class="input-group-text"><i class="bi bi-person"></i></div>
+                            <input type="text" class="form-control" placeholder="Enter Name" name="dealername" id="dealername" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="email" class="form-label">Email</label>
+                        <div class="input-group">
+                            <div class="input-group-text"><i class="bi bi-envelope"></i></div>
+                            <input type="email" class="form-control" placeholder="Enter Your Email" name="email" id="email" required />
+                        </div>
+                    </div>
+
+                    <!-- Phone Number Field -->
+                    <div class="form-group">
+        <input type="text" class="form-control" placeholder="Contact No" name="contactno" id="contactno" required
+            oninput="validateContact()" maxlength="10" />
+        <small id="contactError" style="color: red; display: none;">Must contain exactly 10 digits</small>
+    </div>
+
+
+                    <div class="form-group mb-4">
+                        <label for="district" class="form-label">Select District</label>
+                        <select class="form-control" name="districtid" id="district" required>
+                            <option value="">------- Select District -------</option>
+                            {% for d in district %}
+                                <option value="{{ d.districtid }}">{{ d.districtname }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="location" class="form-label">Select Location</label>
+                        <select name="locationid" id="location" class="form-control" required>
+                            <option value="0">-- Select Location --</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="username" class="form-label">Username</label>
+                        <div class="input-group">
+                            <div class="input-group-text"><i class="bi bi-person-lock"></i></div>
+                            <input type="text" class="form-control" placeholder="Enter Username" name="username" id="username" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-4">
+                        <label for="password" class="form-label">Password</label>
+                        <div class="input-group">
+                            <div class="input-group-text"><i class="bi bi-lock"></i></div>
+                            <input type="password" class="form-control" placeholder="Enter Password" name="password" id="password" required />
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Register</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'Admin/jquery-3.7.1.min.js' %}"></script>
+<script>
+$(document).ready(function() {
+    $.ajaxSetup({
+        headers : {"X-CSRFToken" : '{{ csrf_token }}'}
+    });
+
+    $('#district').change(function() {
+        var districtid = $(this).val();
+        $.ajax({
+            type: "POST",
+            url : '{% url "filllocation" %}',
+            data : {did: districtid},
+            datatype: "json",
+            success : function(data) {
+                $('#location').empty();
+                $.each(data, function(key, val) {
+                    var row = "<option value='"+val.locationid+"'>"+val.locationname+"</option>";
+                    $('#location').append(row);
+                });
+            }
+        });
+    });
+});
+</script>
+<script>
+function validateContact() {
+    let contactInput = document.getElementById("contactno");
+    let errorMsg = document.getElementById("contactError");
+    let contactValue = contactInput.value;
+
+    if (/^\d{10}$/.test(contactValue)) {
+        errorMsg.style.display = "none"; // Hide error if valid
+        contactInput.setCustomValidity(""); // Allow form submission
+    } else {
+        errorMsg.style.display = "block"; // Show error message
+        contactInput.setCustomValidity("Must contain exactly 10 digits"); // Prevent form submission
+    }
+}
+
+function validateForm() {
+    let contactValue = document.getElementById("contactno").value;
+
+    if (!/^\d{10}$/.test(contactValue)) {
+        alert("Contact number must be exactly 10 digits.");
+        return false; // Prevent form submission
+    }
+    return true; // Allow form submission if valid
+}
+</script>
+{% include 'Admin/footer.html' %}

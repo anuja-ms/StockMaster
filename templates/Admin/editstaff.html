@@ -1,0 +1,63 @@
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+{% load static %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <!-- Card Container -->
+            <div class="card shadow-lg p-4 rounded">
+
+                <!-- Card Title -->
+                <h3 class="text-center mb-4">Edit Staff Details</h3>
+
+                <!-- Form -->
+                <form action="{% url 'editstaff' staff.staffid %}" method="POST">
+                    {% csrf_token %}
+
+                    <!-- Staff Name Field -->
+                    <div class="form-group mb-4">
+                        <label for="staffname" class="form-label">Staff Name</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="bi bi-person"></i>
+                            </div>
+                            <input type="text" class="form-control" value="{{staff.staffname}}" name="staffname" id="staffname" required />
+                        </div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="form-group mb-4">
+                        <label for="email" class="form-label">Email</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="bi bi-envelope"></i>
+                            </div>
+                            <input type="email" class="form-control" value="{{staff.email}}" name="email" id="email" required />
+                        </div>
+                    </div>
+
+                    <!-- Contact Number Field -->
+                    <div class="form-group mb-4">
+                        <label for="contactno" class="form-label">Contact Number</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="bi bi-telephone"></i>
+                            </div>
+                            <input type="number" class="form-control" value="{{staff.contactno}}" name="contactno" id="contactno" required />
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Update Staff</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% include 'Admin/footer.html' %}

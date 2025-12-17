@@ -1,0 +1,190 @@
+{% include 'Staff/header.html' %}
+{% load static %}
+
+<style>
+    /* Ensure Full-Width Layout */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html, body {
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+    }
+
+    .container {
+        max-width: 100% !important;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .row {
+        margin: 0;
+        width: 100%;
+    }
+
+    .hero {
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+    }
+
+    .hero img {
+        width: 100%;
+        height: auto;
+    }
+
+    .banner {
+        width: 100%;
+    }
+
+    .banner__pic img {
+        width: 100%;
+        height: auto;
+    }
+
+    .blog__item__pic img {
+        width: 100%;
+        height: auto;
+    }
+
+    .hero__categories {
+        width: 100%;
+    }
+</style>
+
+<!-- Hero Section Begin -->
+<section class="hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="hero__categories">
+                    <div class="hero__categories__all">
+                        <i class="fa fa-bars"></i>
+                        <span>All departments</span>
+                    </div>
+                    {% for s in cat %}
+                    <ul>
+                        <li><a href="{% url 'catsubview' id=s.categoryid %}">{{s.categoryname}}</a></li>
+                    </ul>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="hero__search">
+                    <div class="blog__item__pic text-center position-relative">
+                        <img src="{% static 'staff/img/blog/staside2.webp' %}" alt="" class="img-fluid rounded">
+                        <div class="caption-overlay position-absolute top-50 start-50 translate-middle bg-dark text-white p-3 rounded">
+                            <h5 class="mb-0">Exclusive Deals & Fresh Picks</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Categories Section Begin -->
+<section class="categories py-5">
+    <div class="container">
+        <div class="row">
+            <div class="categories__slider owl-carousel">
+                <div class="col-lg-3">
+                    <div class="categories__item set-bg" data-setbg="{% static 'staff/img/categories/cat-1.jpg' %}">
+                        <h5><a href="#">Fresh Fruit</a></h5>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="categories__item set-bg" data-setbg="{% static 'staff/img/categories/cat-2.jpg' %}">
+                        <h5><a href="#">Dried Fruit</a></h5>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="categories__item set-bg" data-setbg="{% static 'staff/img/categories/cat-3.jpg' %}">
+                        <h5><a href="#">Vegetables</a></h5>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="categories__item set-bg" data-setbg="{% static 'staff/img/categories/cat-4.jpg' %}">
+                        <h5><a href="#">Drink Fruits</a></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Categories Section End -->
+
+<!-- Banner Section -->
+<div class="banner py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="banner__pic">
+                    <img src="{% static 'staff/img/banner/banner-1.jpg' %}" alt="" class="img-fluid rounded shadow">
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6">
+                <div class="banner__pic">
+                    <img src="{% static 'staff/img/banner/banner-2.jpg' %}" alt="" class="img-fluid rounded shadow">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Banner Section End -->
+
+<!-- Blog Section Begin -->
+<section class="from-blog spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <div class="section-title from-blog__title">
+                    <h2>From The Storage</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="blog__item border rounded shadow p-3">
+                    <div class="blog__item__pic">
+                        <img src="{% static 'staff/img/blog/bulk1.jpg' %}" alt="" class="img-fluid rounded">
+                    </div>
+                    <div class="blog__item__text text-center">
+                        <h5><a href="#">Snacks And Branded Foods</a></h5>
+                        <p>Deliciously crispy, irresistibly tasty—snack time just got better!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="blog__item border rounded shadow p-3">
+                    <div class="blog__item__pic">
+                        <img src="{% static 'staff/img/blog/bulk7.jpg' %}" alt="" class="img-fluid rounded">
+                    </div>
+                    <div class="blog__item__text text-center">
+                        <h5><a href="#">Fruits & Vegetables</a></h5>
+                        <p>Fresh from the farm, packed with nature’s goodness—pure, healthy, and delicious!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-6">
+                <div class="blog__item border rounded shadow p-3">
+                    <div class="blog__item__pic">
+                        <img src="{% static 'staff/img/blog/bulk4.webp' %}" alt="" class="img-fluid rounded">
+                    </div>
+                    <div class="blog__item__text text-center">
+                        <h5><a href="#">Beauty & Hygiene</a></h5>
+                        <p>Glow with confidence, stay fresh every day!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Blog Section End -->
+
+{% include 'Staff/footer.html' %}

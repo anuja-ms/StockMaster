@@ -1,0 +1,174 @@
+{% load static %}
+<div class="mainscreen">
+    <!-- <img src="https://image.freepik.com/free-vector/purple-background-with-neon-frame_52683-34124.jpg"  class="bgimg " alt="">-->
+    <div class="card">
+      <div class="leftside">
+        <img src="{% static 'Admin/payment2.jpg' %}" class="product" alt="Shoes" />
+      </div>
+      <div class="rightside">
+        <form action="{% url 'payment_process' %}" method="post">
+          {% csrf_token %}
+
+          <input type="hidden" name="purchasemasterid" value="{{purchasemaster.purchasemasterid}}" id="purchasemasterid">
+          <!-- <h1>CheckOut</h1> -->
+          <h2>Payment Page</h2>
+          <p>Accountholder Name</p>
+          <input type="text" class="inputbox" name="name" required />
+          <p>Account Number</p>
+          <input type="number" class="inputbox" name="account_number" id="account_number" required />
+
+          <p>Amount</p>
+          <input type="number" class="inputbox" name="amount" id="amount" value="{{purchasemaster.totalamount}}" required />
+          <!-- <select class="inputbox" name="card_type" id="card_type" required>
+            <option value="">--Select a Card Type--</option>
+            <option value="Visa">Visa</option>
+            <option value="RuPay">RuPay</option>
+            <option value="MasterCard">MasterCard</option>
+          </select> -->
+
+          <div class="expcvv">
+
+            <p class="expcvv_text">Expiry</p>
+            <input type="month" class="inputbox" name="exp_date" placeholder="MM/YY"  id="exp_date" maxlength="7" required />
+
+            <p class="expcvv_text2">CVV</p>
+            <input type="password" class="inputbox" name="cvv" id="cvv" required />
+          </div>
+          <p></p>
+          <button type="submit" class="button">Pay</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <style>
+    body {
+  font-family: "Roboto", sans-serif !important;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.mainscreen {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #dfdbe5;
+  background-image: url("https://wallpaperaccess.com/full/306306.png");
+  color: #963e7b;
+}
+
+.card {
+  width: 60rem;
+  margin: auto;
+  background: white;
+  border-radius: 1.5rem;
+  box-shadow: 4px 3px 20px #3535358c;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden; /* Prevent content overflow */
+}
+
+.leftside {
+  background: #030303;
+  width: 40%; /* Adjust width as needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 1.5rem;
+  border-bottom-left-radius: 1.5rem;
+  overflow: hidden;
+}
+
+.product {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures full coverage */
+}
+
+.rightside {
+  background-color: #ffffff;
+  width: 35rem;
+  border-bottom-right-radius: 1.5rem;
+  border-top-right-radius: 1.5rem;
+  padding: 1rem 2rem 3rem 3rem;
+}
+
+p {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin: 0.8rem 0;
+}
+
+.inputbox {
+  color: #030303;
+  width: 100%;
+  padding: 0.5rem;
+  border: none;
+  border-bottom: 1.5px solid #ccc;
+  margin-bottom: 1rem;
+  border-radius: 0.3rem;
+  font-family: "Roboto", sans-serif;
+  color: #615a5a;
+  font-size: 1.1rem;
+  font-weight: 500;
+  outline: none;
+}
+
+.expcvv {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.6rem;
+}
+
+.expcvv_text {
+  padding-right: 1rem;
+}
+.expcvv_text2 {
+  padding: 0 1rem;
+}
+
+.button {
+  background: linear-gradient(135deg, #753370 0%, #298096 100%);
+  padding: 15px;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  font-weight: 400;
+  font-size: 1.2rem;
+  margin-top: 10px;
+  width: 100%;
+  letter-spacing: 0.11rem;
+  outline: none;
+}
+
+.button:hover {
+  transform: scale(1.05) translateY(-3px);
+  box-shadow: 3px 3px 6px #38373785;
+}
+
+@media only screen and (max-width: 1000px) {
+  .card {
+    flex-direction: column;
+    width: auto;
+  }
+
+  .leftside {
+    width: 100%;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-radius: 0;
+  }
+
+  .rightside {
+    width: auto;
+    border-bottom-left-radius: 1.5rem;
+    padding: 0.5rem 3rem 3rem 2rem;
+    border-radius: 0;
+  }
+}
+  </style>

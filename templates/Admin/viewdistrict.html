@@ -1,0 +1,32 @@
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+<div class="table_section padding_infor_info">
+    <div class="table-responsive-sm">
+       <table class="table">
+          <thead>
+             <tr>
+                 <th>SI No</th>
+                 <th>District Name</th>
+             </tr>
+          </thead>
+          <tbody>
+             {% for d in district %}
+             <tr>
+                 <td>{{ forloop.counter }}</td>
+                 <td>{{ d.districtname }}</td> <!--districtname is filename in table-->
+                 <td><a href="{% url 'deletedistrict'  districtid=d.districtid %}"
+                onclick = "return confirm('Do you want to Delete?')"
+                class = "btn btn-danger">Delete</a></td>
+
+                 <td><a href="{% url 'editdistrict'  districtid=d.districtid %}"
+                onclick = "return confirm('Do you want to Edit?')"
+                class = "btn btn-danger">Edit</a></td>
+             </tr>
+             {% endfor %}
+          </tbody>
+
+       </table>
+    </div>
+ </div>
+</div>
+ {% include 'Admin/footer.html' %}

@@ -1,0 +1,33 @@
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+<div class="table_section padding_infor_info">
+    <div class="table-responsive-sm">
+       <table class="table">
+          <thead>
+             <tr>
+                 <th>SI No</th>
+                 <th>Brand Name</th>
+                 <th>Brand Image</th>
+             </tr>
+          </thead>
+          <tbody>
+             {% for b in brand %}
+             <tr>
+                 <td>{{ forloop.counter }}</td>
+                 <td>{{ b.brandname }}</td> <!--brandname is filename in table-->
+                 <td><img src="/Images/{{ b.brandimage }}" style="width:100px; height:60px;"></td>
+                 <td><a href="{% url 'editbrand'  brandid=b.brandid %}"
+                onclick = "return confirm('Do you want to Edit?')"
+                class = "btn btn-primary">Edit</a></td>
+                 <td><a href="{% url 'deletebrand'  brandid=b.brandid %}"
+                onclick = "return confirm('Do you want to Delete?')"
+                class = "btn btn-danger">Delete</a></td>
+             </tr>
+             {% endfor %}
+          </tbody>
+
+       </table>
+    </div>
+ </div>
+</div>
+ {% include 'Admin/footer.html' %}

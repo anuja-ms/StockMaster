@@ -1,0 +1,96 @@
+{% include 'Dealer/header.html' %}
+<br><br><br><br><br><br>
+<div class="container mt-5">
+    <div class="card shadow-lg p-4">
+        <h3 class="text-center mb-4 text-primary">Request Details</h3>
+        <div class="table-responsive">
+            <form method="post" action="{% url 'requesttoadmin_process' %}">
+                {% csrf_token %}
+                <table class="table table-striped table-bordered text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Product Name</th>
+                            <th>Request Date</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Dealer Price</th>
+                            <th>Dealer Quantity</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for r in requestdetails %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ r.productid.productname }}</td>
+                            <td>{{ r.requestdate }}</td>
+                            <td>{{ r.price }}</td>
+                            <td>{{ r.quantity }}</td>
+                            <td id="dealerprice_{{ forloop.counter }}">{{ r.productid.dealerprice }}</td>
+                            <td>
+                                <input type="number" class="form-control text-center" id="dealerquantity_{{ forloop.counter }}"
+                                    name="dealerquantity" placeholder="Qty" min="1" onchange="calculateTotalAmount({{ forloop.counter }})"
+                                    value="{{ r.dealerquantity }}" required>
+                                <input type="hidden" name="requestid" value="{{ r.requestid }}">
+                            </td>
+                            <td>
+                                <input type="number" class="form-control text-center bg-light" id="totalamount_{{ forloop.counter }}"
+                                    name="totalamount" placeholder="Amount" value="{{ r.totalamount }}" readonly>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-info">
+                            <th colspan="7" class="text-end">Grand Total:</th>
+                            <th id="grandtotal" class="text-primary fs-5">0</th>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="row mb-3">
+    <label for="required_date" class="col-sm-3 col-form-label fw-bold">Delivery Date</label>
+    <div class="col-sm-9">
+        <input type="date" class="form-control" id="required_date" name="required_date" required>
+    </div>
+</div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success btn-lg px-4">Send Delivery Details</button>
+                </div>
+                <br><br><br>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calculateTotalAmount(index) {
+        var qty = document.getElementById('dealerquantity_' + index).value;
+        var dealerprice = document.getElementById('dealerprice_' + index).textContent;
+        if (qty && dealerprice) {
+            var totalAmount = parseInt(qty) * parseFloat(dealerprice);
+            document.getElementById('totalamount_' + index).value = totalAmount;
+            updateGrandTotal();
+        }
+    }
+
+    function updateGrandTotal() {
+        var grandTotal = 0;
+        var totalAmountFields = document.getElementsByName('totalamount');
+        for (var i = 0; i < totalAmountFields.length; i++) {
+            grandTotal += parseFloat(totalAmountFields[i].value || 0);
+        }
+        document.getElementById('grandtotal').innerHTML = grandTotal.toFixed(2);
+    }
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let today = new Date().toISOString().split('T')[0];  // Get today's date in YYYY-MM-DD format
+        document.getElementById("required_date").setAttribute("min", today); // Set min attribute
+    });
+</script>
+
+{% include 'Dealer/footer.html' %}

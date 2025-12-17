@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product-wise Stock</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* Background Styling */
+        body {
+            font-family: 'Lexend', sans-serif;
+            background: linear-gradient(135deg, lightblue, #dfe9f3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Floating Animation */
+        @keyframes floatEffect {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Holographic Glassmorphism Container */
+        .chart-container {
+            width: 80%;
+            max-width: 500px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0px 20px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            animation: floatEffect 3s infinite ease-in-out;
+        }
+
+        /* Hover Effect */
+        .chart-container:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Title Styling */
+        h2 {
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Pie Chart Hover Effect */
+        canvas {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        canvas:hover {
+            transform: scale(1.05);
+        }
+
+        /* Holographic Buttons */
+        .btn {
+            background: linear-gradient(135deg, #86fde8, #acb6e5);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: 0.3s ease-in-out;
+            box-shadow: 0px 5px 15px rgba(134, 253, 232, 0.4);
+            margin: 5px;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #acb6e5, #86fde8);
+            box-shadow: 0px 5px 20px rgba(134, 253, 232, 0.6);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chart-container">
+        <h2>Product-wise Stock</h2>
+        <button class="btn" onclick="history.back()">← Back</button>
+        <canvas id="pie-chart"></canvas>
+        <button class="btn" onclick="location.reload()">Refresh Chart</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const ctx = document.getElementById('pie-chart').getContext('2d');
+
+            const data = {
+                labels: {{ labels|safe }},
+                datasets: [{
+                    data: {{ data|safe }},
+                    backgroundColor: ['#FF6B6B', '#3498DB', '#2ECC71', '#F1C40F', '#9B59B6'],
+                    hoverOffset: 15
+                }]
+            };
+
+            const config = {
+                type: 'pie',
+                data: data,
+                options: {
+                    responsive: true,
+                    animation: {
+                        animateScale: true,
+                        duration: 1800
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 14 },
+                                color: '#333'
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: '#222',
+                            bodyFont: { size: 14 },
+                            titleFont: { size: 16, weight: 'bold' }
+                        }
+                    }
+                }
+            };
+
+            new Chart(ctx, config);
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,128 @@
+{% load static %}
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+
+<div class="container mt-4">
+    <div class="card p-4 shadow-sm">
+        <h4 class="text-center mb-3">Staff Details</h4>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label for="district" class="fw-bold">Select District</label>
+                <select name="districtid" id="district" class="form-control">
+                    <option value="">Select District</option>
+                    {% for d in district %}
+                    <option value="{{d.districtid}}">{{d.districtname}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="location" class="fw-bold">Select Location</label>
+                <select name="locationid" id="location" class="form-control">
+                    <option value="">Select Location</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4 p-3 shadow-sm">
+        <h5 class="text-center mb-3">Staff List</h5>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>Staff Name</th>
+                        <th>Email</th>
+                        <th>Contact No</th>
+                        <th>Category Name</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="staffs">
+                    <!-- Staff data will load dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% include 'Admin/footer.html' %}
+
+<style>
+    .card {
+        border-radius: 8px;
+    }
+    .table-bordered th, .table-bordered td {
+        text-align: center;
+    }
+    .form-control {
+        border-radius: 6px;
+    }
+</style>
+
+
+        <script src="{% static 'Admin/jquery-3.7.1.min.js' %}"></script>
+        <script>
+            $(document).ready(function() {
+                //alert('haii');
+             $.ajaxSetup({
+                headers: { "X-CSRFToken": '{{csrf_token}}' }
+              });
+              $('#district').change(function () {
+                var districtid = $(this).val();
+                  //alert(districtid);
+                $.ajax({
+                  type: "POST",
+                  url: '{% url "filllocation" %}',
+                  data: { did: districtid },
+                  dataType: "json",
+                  success: function (data) {
+                    $('#location').empty();
+                      //alert("test");
+                      s = 1;
+                      var row = '<option value="">Select Location</option>';
+                      $('#location').append(row);
+                      $.each(data, function (key, val) {
+                      var id=val.locationid;
+                     
+                      var row = '<option value="'+val.locationid+'">'+val.locationname+'</option>';
+                      $('#location').append(row);
+                  });
+                  }
+                });
+              });
+
+              $('#location').change(function () {
+                var locationid = $(this).val();
+                  //alert(locationid);
+                $.ajax({
+                  type: "POST",
+                  url: '{% url "fillstaff" %}',
+                  data: { lid: locationid },
+                  dataType: "json",
+                  success: function (data) {
+                    $('#staffs').empty();
+                      //alert("test");
+                      s = 1;
+                      $.each(data, function (key, val) {
+                      var id=val.staffid;
+                      var editurl='{% url "editstaff" 0 %}'.replace('0', id);
+                      var deleteurl='{% url "deletestaff" 0 %}'.replace('0', id);
+                      var row = '<tr> <td>' + s++ + '</td>' +
+                                      '<td>' + val.staffname + '</td>'+
+                                      '<td>' + val.email + '</td>'+
+                                      '<td>' + val.contactno + '</td>'+
+                                      '<td>' + val.categoryid__categoryname + '</td>'+
+                                      '<td class="text-danger"><a href=" ' + editurl +'">Edit</a></td>'+
+                                      '<td class="text-danger"><a href=" ' + deleteurl +'">Delete</a></td>'+
+                                '</tr>';
+                      $('#staffs').append(row);
+                  });
+                  }
+                });
+              });
+            });
+            </script>

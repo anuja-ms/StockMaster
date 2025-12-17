@@ -1,0 +1,135 @@
+{% load static %}
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+
+<div class="container mt-4">
+    <div class="card p-4 shadow-sm">
+        <h4 class="text-center mb-3">Product Details</h4>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label for="categorys" class="fw-bold">Select Category</label>
+                <select name="categoryid" id="categorys" class="form-control">
+                    <option value="">Select Category</option>
+                    {% for c in categorys %}
+                    <option value="{{c.categoryid}}">{{c.categoryname}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="subcategory" class="fw-bold">Select Subcategory</label>
+                <select name="subcategoryid" id="subcategory" class="form-control">
+                    <option value="">Select Subcategory</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mt-4 p-3 shadow-sm">
+        <h5 class="text-center mb-3">Product List</h5>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>#</th>
+                        <th>Product Name</th>
+                        <th>Description</th>
+                        <th>Dealer Price</th>
+                        <th>Price</th>
+                        <th>Unit</th>
+                        <th>Image</th>
+                        <th>Brand Name</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody id="products">
+                    <!-- Product data will load dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% include 'Admin/footer.html' %}
+
+<style>
+    .card {
+        border-radius: 8px;
+    }
+    .table-bordered th, .table-bordered td {
+        text-align: center;
+        vertical-align: middle;
+    }
+    .form-control {
+        border-radius: 6px;
+    }
+</style>
+
+
+        <script src="{% static 'Admin/jquery-3.7.1.min.js' %}"></script>
+        <script>
+            $(document).ready(function() {
+                //alert('haii');
+             $.ajaxSetup({
+                headers: { "X-CSRFToken": '{{csrf_token}}' }
+              });
+              $('#categorys').change(function () {
+                var categoryid = $(this).val();
+                 // alert(categoryid);
+                $.ajax({
+                  type: "POST",
+                  url: '{% url "fillsubcategory1" %}',
+                  data: { cid: categoryid },
+                  dataType: "json",
+                  success: function (data) {
+                    $('#subcategory').empty();
+                      //alert("test");
+                      s = 1;
+                      var row = '<option value="">Select Subcategory</option>';
+                      $('#subcategory').append(row);
+                      $.each(data, function (key, val) {
+                      var id=val.subcategoryid;
+
+                      var row = '<option value="'+val.subcategoryid+'">'+val.subcategoryname+'</option>';
+                      $('#subcategory').append(row);
+                  });
+                  }
+                });
+              });
+
+              $('#subcategory').change(function () {
+                var subcategoryid = $(this).val();
+                  //alert(subcategoryid);
+                $.ajax({
+                  type: "POST",
+                  url: '{% url "fillproduct" %}',
+                  data: { sid: subcategoryid },
+                  dataType: "json",
+                  success: function (data) {
+                    $('#products').empty();
+                      //alert("test");
+                      s = 1;
+                      $.each(data, function (key, val) {
+                      var id=val.productid;
+                      var editurl='{% url "editproduct" 0 %}'.replace('0', id);
+                      var deleteurl='{% url "deleteproduct" 0 %}'.replace('0', id);
+                      var row = '<tr> <td>' + s++ + '</td>' +
+                                      '<td>' + val.productname + '</td>'+
+                                      '<td>' + val.description + '</td>'+
+                                      '<td>' + val.dealerprice + '</td>'+
+                                      '<td>' + val.price + '</td>'+
+                                      '<td>' + val.unit + '</td>'+
+                                      '<td><img src = "/Images/'+val.image+'"></td>'+
+                                      '<td>' + val.brandid__brandname + '</td>'+
+                                      '<td class="text-danger"><a href=" ' + editurl +'">Edit</a></td>'+
+                                      '<td class="text-danger"><a href=" ' + deleteurl +'">Delete</a></td>'+
+                                '</tr>';
+                      $('#products').append(row);
+                  });
+                  }
+                });
+              });
+            });
+            </script>

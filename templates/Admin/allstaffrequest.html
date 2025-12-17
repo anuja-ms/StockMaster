@@ -1,0 +1,190 @@
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+<style>
+    body {
+        background-color: #dcdcdc; /* Light gray-blue background */
+    }
+</style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dealer Request</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #5a5a5a;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            margin-top: 15px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        thead {
+            background: #6a11cb; /* Gradient Header */
+            background: linear-gradient(to right, #008080, gray);
+            color: white;
+            font-size: 16px;
+        }
+
+        tbody tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        tbody tr:hover {
+            background: #eef5ff;
+            transition: 0.3s ease-in-out;
+        }
+
+        input[type="number"], input[type="text"], select, textarea {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .total-amount {
+            background: #e9ecef;
+            color: #333;
+            font-weight: bold;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 15px;
+            color: #333;
+        }
+
+        button {
+            background: #b66dff;
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+            border-radius: 5px;
+            transition: 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background: #4c0eaa;
+        }
+
+        @media (max-width: 768px) {
+            table {
+                font-size: 12px;
+            }
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-content">
+            <form method="POST" action="{% url 'allstaffrequest_process' %}">
+                {% csrf_token %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sl No</th>
+                            <th>📌 Product Name</th>
+                            <th>📅 Request Date</th>
+                            <th>📦 Stock</th>
+                            <th>⚠️ Reorder Level</th>
+                            <th>💰 Price</th>
+                            <th>💲 Dealer Price</th>
+                            <th>👨‍💼 Staff Name</th>
+                            <th>📂 Category</th>
+                            <th>🔢 Quantity</th>
+                            <th>🧾 Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for req in req %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ req.productid.productname }}</td>
+                                <td>{{ req.requestdate }}</td>
+                                <td>{{ req.stock }}</td>
+                                <td>{{ req.reorderlevel }}</td>
+                                <td>{{ req.productid.price }}</td>
+                                <td class="dealer-price">{{ req.productid.dealerprice }}</td>
+                                <td>{{ req.staffid.staffname }}</td>
+                                <td>{{ req.productid.subcategoryid.categoryid.categoryname }}</td>
+                                <td>
+                                    <input type="hidden" name="productid[]" value="{{ req.productid.productid }}">
+                                    <input type="number" name="quantity[]" min="0" class="quantity" oninput="calculateTotal(this)">
+                                </td>
+                                <td>
+                                    <input type="text" name="totalamount[]" class="total-amount" readonly>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <label for="dealerid">Select Dealer</label>
+                <select name="dealerid" id="dealerid" required>
+                    <option value="">Select Dealer</option>
+                    {% for d in dealers %}
+                        <option value="{{ d.dealerid }}">{{ d.dealername }}</option>
+                    {% endfor %}
+                </select><br>
+                <label for="remark">Remark</label>
+                <textarea name="remark" id="remark" rows="3"></textarea>
+                <button type="submit">Send Request To Dealer</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function calculateTotal(input) {
+            let row = input.closest("tr");
+            let dealerPrice = parseFloat(row.querySelector(".dealer-price").innerText) || 0;
+            let quantity = parseInt(input.value) || 0;
+            let totalAmountField = row.querySelector(".total-amount");
+            let totalAmount = quantity * dealerPrice;
+            totalAmountField.value = totalAmount.toFixed(2);
+        }
+    </script>
+</body>
+
+</html>
+{% include 'Admin/footer.html' %}

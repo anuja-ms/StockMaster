@@ -1,0 +1,89 @@
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+
+<div class="container">
+   <div class="table_section padding_infor_info">
+       <h3>Payment View 💳</h3>
+       <br><br>
+       <div class="table-responsive-sm">
+           <table class="table">
+               <thead>
+                   <tr>
+                       <th>SI No</th>
+                       <th class="black-header">💰 Amount</th>
+                       <th class="black-header">📅 Purchase Date</th>
+                   </tr>
+               </thead>
+               <tbody>
+                   {% for p in payment %}
+                   <tr>
+                       <td>{{ forloop.counter }}</td>
+                       <td class="amount">₹ {{ p.Amount }}</td>
+                       <td class="purchase-date">{{ p.date }}</td>
+                   </tr>
+                   {% endfor %}
+               </tbody>
+           </table>
+       </div>
+   </div>
+</div>
+
+<style>
+   .table_section {
+       background: lightgray;
+       padding: 20px;
+       border-radius: 10px;
+       box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+       max-width: 900px;
+       margin: 30px auto;
+       text-align: center;
+   }
+
+   table {
+       width: 100%;
+       border-collapse: collapse;
+   }
+
+   th, td {
+       padding: 12px;
+       text-align: center;
+       border-bottom: 1px solid #ddd;
+   }
+
+   thead {
+       background: #ffffff; /* White Background */
+       color: black !important; /* Black Text */
+       font-size: 18px;
+   }
+
+   .black-header {
+       color: #000000 !important; /* Force Black Color for Headers */
+       font-weight: bold;
+   }
+
+   tbody tr:nth-child(even) {
+       background: #f1f1f1;
+   }
+
+   tbody tr:hover {
+       background: #e0e0e0;
+       transition: 0.3s ease-in-out;
+   }
+
+   .amount {
+       font-weight: bold;
+       color: #2ecc71 !important; /* Green */
+   }
+
+   .purchase-date {
+       font-weight: bold;
+       color: #3498db !important; /* Blue */
+   }
+
+   .table_section h3 {
+       color: #008080 !important; /* Red for title */
+       font-weight: bold;
+   }
+</style>
+
+{% include 'Admin/footer.html' %}

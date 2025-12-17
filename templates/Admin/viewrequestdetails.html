@@ -1,0 +1,219 @@
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+{% load static %}
+<style>
+    body {
+        background-color: #dcdcdc; /* Light gray-blue background */
+    }
+</style>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="text-center">Staff Request 📦</h3>
+        </div>
+        <div class="card-body">
+            <form action="{% url 'dealerrequest_process' %}" method="post">
+                {% csrf_token %}
+
+                <!-- Staff Selection -->
+                <label for="staffid">Select Staff</label>
+                <select name="staffid" id="staffid" class="form-control" required>
+                    <option value="">Select Staff</option>
+                    {% for s in staffs %}
+                        <option value="{{s.staffid}}">{{s.staffname}}</option>
+                    {% endfor %}
+                </select><br>
+
+                <!-- Table -->
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Sl No</th>
+                                <th>Product Name</th>
+                                <th>Request Date</th>
+                                <th>Stock</th>
+                                <th>Reorder Level</th>
+                                <th>Price</th>
+                                <th>Dealer Price</th>
+                                <th>Category</th>
+                                <th>Quantity</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="requestdetails"></tbody>
+                    </table>
+                </div>
+<br><br><br>
+                <!-- Dealer Selection -->
+                <label for="dealerid">Select Dealer</label>
+                <select name="dealerid" id="dealerid" class="form-control" required>
+                    <option value="">Select Dealer</option>
+                    {% for d in dealers %}
+                        <option value="{{d.dealerid}}">{{d.dealername}}</option>
+                    {% endfor %}
+                </select><br>
+
+                <!-- Remark -->
+                <label for="remark">Remark</label>
+                <textarea name="remark" id="remark" class="form-control" rows="3" required></textarea><br>
+
+                <!-- Hidden Fields -->
+                <input type="hidden" name="totalamount" id="hidden_totalamount">
+
+                <!-- Submit Button -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success btn-lg">Send Request To Dealer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* General Styling */
+    .container {
+        max-width: 1200px;
+        margin: 30px auto;
+    }
+
+    .card {
+        background: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+    }
+
+    .card-header {
+        background: #4CAF50;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        font-size: 20px;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .form-control {
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        width: 100%;
+    }
+
+    .table {
+        margin-top: 20px;
+    }
+
+    .table th {
+        background: #343a40;
+        color: white;
+        text-align: center;
+    }
+
+    .table tbody tr:hover {
+        background: #f1f1f1;
+        transition: 0.3s ease-in-out;
+    }
+
+    .btn-success {
+        background: #28a745;
+        padding: 10px 20px;
+        border-radius: 5px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .btn-success:hover {
+        background: #218838;
+    }
+</style>
+
+{% include 'Admin/footer.html' %}
+
+<script src="{% static 'Admin/jquery-3.7.1.min.js' %}"></script>
+<script>
+$(document).ready(function() {
+    $.ajaxSetup({
+        headers: { "X-CSRFToken": '{{ csrf_token }}' }
+    });
+
+    $('#staffid').change(function () {
+        var staffid = $(this).val();
+        $.ajax({
+            type: "POST",
+            url: '{% url "fillrequestdetails" %}',
+            data: { sid: staffid },
+            dataType: "json",
+            success: function (data) {
+                $('#requestdetails').empty();
+                var s = 1;
+                var grandTotal = 0;  // Initialize the grand total
+
+                // Reset the hidden fields before adding new values
+                $('#hidden_productid').val('');
+                $('#hidden_quantity').val('');
+                $('#hidden_dealerprice').val('');
+                $('#hidden_totalamount').val(0);
+
+                $.each(data, function (key, val) {
+                    var row = '<tr> <td>' + s++ + '</td>' +
+                        '<td>' + val.productid__productname + '</td>' +
+                        '<td>' + val.requestdate + '</td>' +
+                        '<td>' + val.productid__tbl_stock__stock + '</td>' +
+                        '<td>' + val.productid__tbl_stock__Reorderlevel + '</td>' +
+                        '<td>' + val.productid__price + '</td>' +
+                        '<td class="dealerprice">' + val.productid__dealerprice + '</td>' +
+                        '<td>' + val.staffid__categoryid__categoryname + '</td>' +
+                        '<td><input type="number" name="qty[]" class="quantity"  style="width: 80px;"></td>' +
+                        '<td><input type="text" name="amount[]" class="totalamount"  style="width: 80px;" readonly></td>' +
+                        '<td>' + val.status + '<input type="hidden" name="productid[]" value="'+val.productid__productid+'"></td>' +
+                        '</tr>';
+
+                    $('#requestdetails').append(row);
+
+                    // Accumulate the grand total for all rows
+                    grandTotal += val.quantity * val.productid__dealerprice;
+
+
+                });
+
+                // Set the grand total in the hidden totalamount field
+                $('#hidden_totalamount').val(grandTotal);
+            }
+        });
+    });
+
+// Dynamically calculate total amount based on quantity input
+    $('#requestdetails').on('input', '.quantity', function() {
+        var row = $(this).closest('tr'); // Get the row containing this input
+        var quantity = $(this).val(); // Get the entered quantity
+        var dealerprice = parseInt(row.find('.dealerprice').text()); // Get the product price from the row
+        var totalAmount = parseInt(quantity) * parseInt(dealerprice); // Calculate total amount
+        row.find('.totalamount').val(totalAmount); // Update the total amount input
+
+        // Update the hidden fields for productid, quantity, and price
+        var productid = row.find('td').eq(1).text();  // Assuming the productid is in the second column (adjust as necessary)
+        $('#hidden_productid').val(function(i, oldValue) {
+            return oldValue + productid + ',';
+        });
+        $('#hidden_quantity').val(function(i, oldValue) {
+            return oldValue + quantity + ',';
+        });
+        $('#hidden_price').val(function(i, oldValue) {
+            return oldValue + dealerprice + ',';
+        });
+
+        // Recalculate grand total
+        var grandTotal = 0;
+        $('#requestdetails').find('.totalamount').each(function() {
+            grandTotal += parseInt($(this).val());
+        });
+
+        // Update the hidden field for grand total
+        $('#hidden_totalamount').val(grandTotal);
+    });
+});
+
+
+</script>

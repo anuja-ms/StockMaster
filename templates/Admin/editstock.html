@@ -1,0 +1,52 @@
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+{% load static %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <!-- Card Container -->
+            <div class="card shadow-lg p-4 rounded">
+
+                <!-- Card Title -->
+                <h3 class="text-center mb-4">Edit Stock</h3>
+
+                <!-- Form -->
+                <form action="{% url 'editstock' stoc.stockid %}" method="POST">
+                    {% csrf_token %}
+
+                    <!-- Stock Field -->
+                    <div class="form-group mb-4">
+                        <label for="stock" class="form-label">Stock</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="bi bi-box"></i>
+                            </div>
+                            <input type="text" class="form-control" value="{{stoc.stock}}" name="stock" id="stock" required />
+                        </div>
+                    </div>
+
+                    <!-- Reorder Level Field -->
+                    <div class="form-group mb-4">
+                        <label for="Reorderlevel" class="form-label">Reorder Level</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="bi bi-arrow-repeat"></i>
+                            </div>
+                            <input type="text" class="form-control" value="{{stoc.Reorderlevel}}" name="Reorderlevel" id="Reorderlevel" required />
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Update Stock</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% include 'Admin/footer.html' %}

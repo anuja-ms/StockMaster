@@ -1,0 +1,100 @@
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+{% load static %}
+<style>
+    body {
+        background-color: #dcdcdc; /* Light gray-blue background */
+    }
+</style>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <!-- Card Container -->
+            <div class="card shadow-lg p-4 rounded">
+
+                <!-- Card Title -->
+                <h3 class="text-center mb-4">Edit Product</h3>
+
+                <!-- Form -->
+                <form action="{% url 'editproduct' pro.productid %}" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Product Name Field -->
+                    <div class="form-group mb-4">
+                        <label for="productname" class="form-label">Product Name</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="bi bi-box"></i>
+                            </div>
+                            <input type="text" class="form-control" value="{{pro.productname}}" name="productname" id="productname" required />
+                        </div>
+                    </div>
+
+                    <!-- Description Field -->
+                    <div class="form-group mb-4">
+                        <label for="description" class="form-label">Description</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="bi bi-file-earmark-text"></i>
+                            </div>
+                            <input type="text" class="form-control" value="{{pro.description}}" name="description" id="description" required />
+                        </div>
+                    </div>
+
+                    <!-- Dealer Price Field -->
+                    <div class="form-group mb-4">
+                        <label for="dealerprice" class="form-label">Dealer Price</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="bi bi-currency-dollar"></i>
+                            </div>
+                            <input type="number" class="form-control" value="{{pro.dealerprice}}" name="dealerprice" id="dealerprice" required />
+                        </div>
+                    </div>
+
+                    <!-- Price Field -->
+                    <div class="form-group mb-4">
+                        <label for="price" class="form-label">Price</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="bi bi-currency-dollar"></i>
+                            </div>
+                            <input type="number" class="form-control" value="{{pro.price}}" name="price" id="price" required />
+                        </div>
+                    </div>
+
+                    <!-- Unit Field -->
+                    <div class="form-group mb-4">
+                        <label for="unit" class="form-label">Unit</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="bi bi-tag"></i>
+                            </div>
+                            <input type="text" class="form-control" value="{{pro.unit}}" name="unit" id="unit" required />
+                        </div>
+                    </div>
+
+                    <!-- Image Upload Field -->
+                    <div class="form-group mb-4">
+                        <label for="pimage" class="form-label">Product Image</label>
+                        <input type="hidden" name="oldimage" value="{{ pro.image }}">
+                        <div>
+                            <img src="/Images/{{ pro.image }}" style="width: 100px; height: 100px;">
+                        </div>
+                        <input type="file" name="pimage" class="form-control">
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Update Product</button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% include 'Admin/footer.html' %}

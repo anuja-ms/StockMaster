@@ -1,0 +1,214 @@
+{% load static %}
+{% include 'Staff/header.html' %}
+<script src="{% static 'Admin/jquery-3.7.1.min.js' %}"></script>
+
+<script>
+    $(document).ready(function() {
+        // Set up AJAX to send CSRF token
+        $.ajaxSetup({
+            headers: { "X-CSRFToken": '{{ csrf_token }}' }
+        });
+
+        // Category change event to populate subcategories
+        $('#categorys').change(function() {
+            var categoryid = $(this).val();
+            $.ajax({
+                type: "POST",
+                url: '{% url "fillsubcategory" %}',  // URL for the view that provides subcategories
+                data: { cid: categoryid },
+                dataType: "json",
+                success: function(data) {
+                    $('#subcategory').empty();  // Clear the subcategory dropdown
+                    var row = '<option value="">Select Subcategory</option>';
+                    $('#subcategory').append(row);
+                    $.each(data, function(key, val) {
+                        var row = '<option value="'+ val.subcategoryid +'">'+ val.subcategoryname +'</option>';
+                        $('#subcategory').append(row);
+                    });
+                }
+            });
+        });
+
+        // Subcategory change event to populate products
+        $('#subcategory').change(function() {
+            var subcategoryid = $(this).val();
+            $.ajax({
+                type: "POST",
+                url: '{% url "fillproductsss" %}',  // URL for the view that provides products
+                data: { sid: subcategoryid },
+                dataType: "json",
+                success: function(data) {
+                    $('#products').empty();  // Clear the products dropdown
+                    var row = '<option value="">Select Product</option>';
+                    $('#products').append(row);
+                    $.each(data, function(key, val) {
+                        var row = '<option value="'+ val.productid +'">'+ val.productname +'</option>';
+                        $('#products').append(row);
+                    });
+                }
+            });
+        });
+
+        // Product change event to populate price and stock
+        $('#products').change(function() {
+            var productid = $(this).val();
+            $.ajax({
+                type: "POST",
+                url: '{% url "get_product_details" %}',  // URL for the view that provides product details
+                data: { pid: productid },
+                dataType: "json",
+                success: function(data) {
+                    $('#productPrice').val(data.dealerprice);
+                    $('#stock').val(data.stock);
+                }
+            });
+        });
+
+        // Calculate total amount when quantity changes
+        $('#quantity').change(function() {
+            var price = parseFloat($('#productPrice').val()) || 0;
+            var quantity = parseInt($('#quantity').val()) || 0;
+            var totalAmount = price * quantity;
+            $('#productamount').val(totalAmount.toFixed(2));
+        });
+    });
+</script>
+
+<div class="container mt-4">
+    <div class="card p-4 shadow-sm">
+        <h3 class="mb-3 text-center">Purchase Details</h3>
+        <form action="{% url 'purchasedeatilsprocess' %}" method="post">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <select class="form-control" name="categorys" id="categorys" required>
+                        <option value="">Select Category</option>
+                        {% for c in cat %}
+                            <option value="{{ c.categoryid }}">{{ c.categoryname }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select class="form-control" name="subcategoryid" id="subcategory" required>
+                        <option value="">Select Subcategory</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select name="productid" id="products" class="form-control" required>
+                        <option value="">Select Product</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" id="productPrice" name="productPrice" class="form-control" placeholder="Product Price" readonly>
+                </div>
+            </div>
+            <div class="row g-3 mt-2">
+                <div class="col-md-3">
+                    <input type="number" id="quantity" name="quantity" class="form-control" placeholder="Quantity" required>
+                </div>
+                <div class="col-md-3">
+                    <input type="number" id="productamount" class="form-control" name="productamount" placeholder="Total Amount" readonly>
+                </div>
+                <div class="col-md-3">
+                    <button id="addMore" class="btn btn-primary w-100">Add More</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="card p-4 shadow-sm">
+        <form action="{% url 'purchasemaster_process' %}" method="post">
+            {% csrf_token %}
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label for="billno">Bill No:</label>
+                    <input type="text" id="billno" name="billno" class="form-control" placeholder="Enter Bill No" required>
+                </div>
+                <div class="col-md-4">
+                    <label for="dealers">Select Dealer:</label>
+                    <select class="form-control" name="dealers" id="dealers" required>
+                        <option value="">Select Dealer</option>
+                        {% for c in dealer %}
+                            <option value="{{ c.dealerid }}">{{ c.dealername }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="dates">Purchase Date:</label>
+                    <input type="date" id="dates" name="purchasedate" class="form-control" required>
+                </div>
+            </div>
+            <div class="table-responsive mt-4">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Sl No</th>
+                            <th>Product Name</th>
+                            <th>Product</th>
+                            <th>Product Amount</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for s in purchase %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ s.productid.productname }}</td>
+                            <td><img src="/Images/{{ s.productid.image }}" alt="Product Image" class="img-thumbnail" style="width: 60px; height: auto;"></td>
+                            <td>{{ s.productprice }}</td>
+                            <td>{{ s.quantity }}</td>
+                            <td>
+                                <a href="{% url 'deletepurchasedetails' purchasedetailsid=s.purchasedetailsid %}" class="btn btn-danger btn-sm" onclick="return confirm('Do you want to Delete?')">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-end fw-bold">Grand Total:</td>
+                            <td>
+                                <input type="number" id="grandTotal" name="grandTotal" class="form-control" readonly>
+                            </td>
+                            <td colspan="2"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="text-center">
+                <input type="submit" class="btn btn-success" value="Submit">
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+
+
+  // Function to calculate grand total and update the input field
+  function calculateGrandTotal() {
+    var grandTotal = 0;
+
+    // Loop through each row and add up the product amounts
+    $('tbody tr').each(function() {
+      var amount = parseFloat($(this).find('td:nth-child(4)').text()) || 0;
+      grandTotal += amount;
+    });
+
+    // Display the grand total in the input field
+    $('#grandTotal').val(grandTotal.toFixed(2));
+  }
+
+  // Call the function on page load
+  $(document).ready(function () {
+    calculateGrandTotal();
+  });
+
+  // Recalculate the grand total whenever a new item is added
+  $('#submit').on('click', function() {
+    setTimeout(calculateGrandTotal, 500); // Delay to ensure new row is added
+  });
+</script>

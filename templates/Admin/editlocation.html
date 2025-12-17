@@ -1,0 +1,84 @@
+{% load static %}
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+
+<main id="main" class="main">
+  <div class="col-lg-8 mx-auto mt-5"> <!-- Increased the column width -->
+
+    <div class="card shadow-lg rounded-3">
+      <div class="card-body">
+        <h5 class="card-title text-center mb-4">District Name</h5>
+
+        <!-- Vertical Form -->
+        <form class="row g-4" method="post" action="{% url 'editlocation' loc.locationid %}"> <!-- Increased spacing between fields -->
+          {% csrf_token %}
+
+          <div class="col-12">
+            <label for="inputName" class="form-label">Name</label>
+            <input type="text" class="form-control form-control-lg" name="txtlocation" id="inputName" value="{{loc.locationname}}" placeholder="Enter district name">
+          </div>
+          <div class="col-12">
+            <label for="inputName4" class="form-label">Name</label>
+            <input type="text" class="form-control" id="inputNanm4" value="{{loc.districtid.districtname}}">
+          </div>
+
+          <div class="text-center mt-5"> <!-- Increased space between fields and buttons -->
+            <button type="submit" class="btn btn-primary btn-lg w-75">Update</button> <!-- Increased button width -->
+            <button type="reset" class="btn btn-outline-secondary btn-lg w-75 mt-3">Reset</button> <!-- Increased button width and added spacing -->
+          </div>
+        </form>
+        <!-- Vertical Form -->
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Optional: Add custom styles in your CSS file -->
+<style>
+  .main {
+    padding: 40px;
+    background-color: white;
+  }
+
+  .card {
+    border-radius: 20px; /* Increased roundness for the card */
+    background-color: #fff;
+  }
+
+  .card-title {
+    color: #343a40;
+    font-weight: 600;
+  }
+
+  .btn {
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+  }
+
+  .btn-outline-secondary {
+    color: #6c757d;
+    border-color: #6c757d;
+  }
+
+  .btn:hover {
+    transform: translateY(-3px);
+  }
+
+  .form-control-lg {
+    padding: 1rem 9.9rem; /* Increased padding for a larger height */
+    font-size: 1.25rem; /* Slightly larger font size */
+  }
+
+  .form-label {
+    font-size: 1.125rem; /* Increased font size */
+    font-weight: 500;
+  }
+</style>
+
+</style>
+

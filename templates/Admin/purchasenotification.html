@@ -1,0 +1,30 @@
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html'%}
+{% load static %}
+<div class="container">
+    <div class="table_section padding_infor_info"  xmlns="http://www.w3.org/1999/html">
+        <h3>Purchase Notification</h3>
+    <div class="table-responsive-sm">
+        <table class="table">
+            <thead>
+
+                <tr>
+                    <th>Sl No</th>
+                    <th>Billno_Purchasedate</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for pur in purchase %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td><a href="{% url 'viewbilling' purchasemasterid=pur.purchasemasterid %}">Bill No {{ pur.purchasemasterid}}__{{ pur.purchasedate }}</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+    </div>
+</div>
+</div>
+        {% include 'Admin/footer.html' %}

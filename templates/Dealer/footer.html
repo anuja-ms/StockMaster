@@ -1,0 +1,266 @@
+{% load static %}
+       <!-- Footer Start -->
+        <div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
+            <div class="container py-5">
+                <div class="pb-4 mb-4" style="border-bottom: 1px solid rgba(226, 175, 24, 0.5) ;">
+                    <div class="row g-4">
+                        <div class="col-lg-3">
+                            <a href="#">
+                                <h1 class="text-primary mb-0">StockMaster</h1>
+                                <p class="text-secondary mb-0">Smart Stock Solutions</p>
+                            </a>
+                        </div>
+                        <div class="col-lg-6">
+<!--                            <div class="position-relative mx-auto">-->
+<!--                                <input class="form-control border-0 w-100 py-3 px-4 rounded-pill" type="number" placeholder="Your Email">-->
+<!--                                <button type="submit" class="btn btn-primary border-0 border-secondary py-3 px-4 position-absolute rounded-pill text-white" style="top: 0; right: 0;">Subscribe Now</button>-->
+<!--                            </div>-->
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="d-flex justify-content-end pt-3">
+                                <a class="btn  btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-twitter"></i></a>
+                                <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-facebook-f"></i></a>
+                                <a class="btn btn-outline-secondary me-2 btn-md-square rounded-circle" href=""><i class="fab fa-youtube"></i></a>
+                                <a class="btn btn-outline-secondary btn-md-square rounded-circle" href=""><i class="fab fa-linkedin-in"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-5">
+                   <div class="col-lg-3 col-md-6">
+    <div class="footer-item">
+        <h4 class="text-light mb-3">Why People Like Us!</h4>
+        <p class="mb-4">We offer fresh quality products, unbeatable prices, a wide variety of choices,
+            a hassle-free shopping experience, and exceptional customer service—all under one roof! 🛒✅</p>
+        <button type="button" class="btn border-secondary py-2 px-4 rounded-pill text-primary" data-bs-toggle="modal" data-bs-target="#readMoreModal">
+            Read More
+        </button>
+    </div>
+</div>
+
+<!-- Bootstrap Modal (Popup Box) -->
+<div class="modal fade" id="readMoreModal" tabindex="-1" aria-labelledby="readMoreModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal-bg"> <!-- Added class 'custom-modal-bg' -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="readMoreModalLabel">Why People Like Us!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>🌟 Why People Love Shopping with Us! 🌟</p>
+                <ul>
+                    <li>✨ Fresh & Quality Products – Always fresh, always the best!</li>
+                    <li>💰 Unbeatable Prices** – Get the best deals every day!</li>
+                    <li>🏪 Wide Variety of Choices – Everything you need, all in one place!</li>
+                    <li>✅ Hassle-Free Shopping – Easy, convenient, and stress-free!</li>
+                    <li>🤝 Exceptional Customer Service** – Because we care about you!</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS to Match Image Color -->
+<style>
+    .custom-modal-bg {
+        background-color: #d8e2ec !important; /* Adjusted color based on image */
+        color: #333; /* Text color for contrast */
+        border-radius: 10px; /* Optional: Rounded corners for a modern look */
+    }
+</style>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="d-flex flex-column text-start footer-item">
+    <h4 class="text-light mb-3">Shop Info</h4>
+
+    <!-- About Us -->
+    <a class="btn-link" href="#" data-bs-toggle="modal" data-bs-target="#aboutUsModal">About Us</a>
+
+    <!-- Contact Us -->
+    <a class="btn-link" href="#" data-bs-toggle="modal" data-bs-target="#contactUsModal">Contact Us</a>
+
+    <!-- Privacy Policy -->
+    <a class="btn-link" href="#" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Privacy Policy</a>
+
+    <!-- Terms & Condition -->
+    <a class="btn-link" href="#" data-bs-toggle="modal" data-bs-target="#termsConditionModal">Terms & Condition</a>
+
+    <!-- Return Policy -->
+    <a class="btn-link" href="#" data-bs-toggle="modal" data-bs-target="#returnPolicyModal">Return Policy</a>
+
+    <!-- FAQs & Help -->
+    <a class="btn-link" href="#" data-bs-toggle="modal" data-bs-target="#faqModal">FAQs & Help</a>
+</div>
+
+<!-- Bootstrap Modals (Popups) -->
+
+<!-- About Us Modal -->
+<div class="modal fade" id="aboutUsModal" tabindex="-1" aria-labelledby="aboutUsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal-bg">
+            <div class="modal-header">
+                <h5 class="modal-title" id="aboutUsLabel">About Us</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>We are a leading supermarket offering the best quality products at the most affordable prices!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Us Modal -->
+<div class="modal fade" id="contactUsModal" tabindex="-1" aria-labelledby="contactUsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal-bg">
+            <div class="modal-header">
+                <h5 class="modal-title" id="contactUsLabel">Contact Us</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Email: stockmaster@gmail.com</p>
+                <p>Phone: +91 9045672034</p>
+                <p>Address: 1123 Street, Ernakulam, KERALA</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Privacy Policy Modal -->
+<div class="modal fade" id="privacyPolicyModal" tabindex="-1" aria-labelledby="privacyPolicyLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal-bg">
+            <div class="modal-header">
+                <h5 class="modal-title" id="privacyPolicyLabel">Privacy Policy</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Your privacy is important to us. We ensure that your data is protected and never shared without consent.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Terms & Conditions Modal -->
+<div class="modal fade" id="termsConditionModal" tabindex="-1" aria-labelledby="termsConditionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal-bg">
+            <div class="modal-header">
+                <h5 class="modal-title" id="termsConditionLabel">Terms & Conditions</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>By using our services, you agree to our terms and conditions. Please read them carefully.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Return Policy Modal -->
+<div class="modal fade" id="returnPolicyModal" tabindex="-1" aria-labelledby="returnPolicyLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal-bg">
+            <div class="modal-header">
+                <h5 class="modal-title" id="returnPolicyLabel">Return Policy</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>We offer a hassle-free return policy within 14 days of purchase. Terms apply.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FAQs & Help Modal -->
+<div class="modal fade" id="faqModal" tabindex="-1" aria-labelledby="faqLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content custom-modal-bg">
+            <div class="modal-header">
+                <h5 class="modal-title" id="faqLabel">FAQs & Help</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Q: What payment methods do you accept?</strong></p>
+                <p>A: We accept credit/debit cards, UPI, and cash on delivery.</p>
+                <p><strong>Q: Do you offer home delivery?</strong></p>
+                <p>A: Yes, we offer fast and reliable home delivery services.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS for Background Color -->
+<style>
+    .custom-modal-bg {
+        background-color: #d8e2ec !important; /* Light grayish-blue */
+        color: #333; /* Dark text for better readability */
+        border-radius: 10px;
+    }
+</style>
+                    </div>
+<!--                    <div class="col-lg-3 col-md-6">-->
+<!--                        <div class="d-flex flex-column text-start footer-item">-->
+<!--                            <h4 class="text-light mb-3">Account</h4>-->
+<!--                            <a class="btn-link" href="">My Account</a>-->
+<!--                            <a class="btn-link" href="">Shop details</a>-->
+<!--                            <a class="btn-link" href="">Shopping Cart</a>-->
+<!--                            <a class="btn-link" href="">Wishlist</a>-->
+<!--                            <a class="btn-link" href="">Order History</a>-->
+<!--                            <a class="btn-link" href="">International Orders</a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+                    <div class="col-lg-3 col-md-6">
+                        <div class="footer-item">
+                            <h4 class="text-light mb-3">Contact</h4>
+                            <p>Address: 1123 Street, Ernakulam, KERALA</p>
+                            <p>Email: stockmaster@gmail.com</p>
+                            <p>Phone: +91 9045672034</p>
+<!--                            <p>Payment Accepted</p>-->
+                            <img src="img/payment.png" class="img-fluid" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Footer End -->
+
+        <!-- Copyright Start -->
+        <div class="container-fluid copyright bg-dark py-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+                        <span class="text-light"><a href="#"><i class="fas fa-copyright text-light me-2"></i>StockMaster</a> Smart Stock Solutions</span>
+                    </div>
+                    <div class="col-md-6 my-auto text-center text-md-end text-white">
+                        <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
+                        <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
+                        <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
+                        Designed By <a class="border-bottom" href="https://htmlcodex.com">Anuja M S</a> Distributed By <a class="border-bottom" href="https://themewagon.com">Supermarket</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Copyright End -->
+
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-primary border-3 border-primary rounded-circle back-to-top"><i class="fa fa-arrow-up"></i></a>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'dealer/lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'dealer/lib/waypoints/waypoints.min.js' %]"></script>
+    <script src="{% static 'dealer/lib/lightbox/js/lightbox.min.js' %]"></script>
+    <script src="{% static 'dealer/lib/owlcarousel/owl.carousel.min.js' %}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{% static 'dealer/js/main.js' %]"></script>
+    </body>
+
+</html>

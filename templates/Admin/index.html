@@ -1,0 +1,115 @@
+{% load static %}
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+
+<!-- partial -->
+<div class="main-panel">
+  <div class="content-wrapper">
+    <div class="page-header">
+      <h3 class="page-title">
+        <span class="page-title-icon bg-gradient-primary text-white me-2">
+          <i class="mdi mdi-home"></i>
+        </span> Dashboard
+      </h3>
+      <nav aria-label="breadcrumb">
+        <ul class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page">
+            <span></span>Overview <i class="mdi mdi-alert-circle-outline icon-sm text-primary align-middle"></i>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="row">
+      <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-danger card-img-holder text-white">
+          <div class="card-body">
+            <img src="{% static 'Admin/assets/images/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
+            <h4 class="font-weight-normal mb-3">Monthly Sales <i class="mdi mdi-chart-line mdi-24px float-end"></i>
+            </h4>
+            <h2 class="mb-5">₹ {{ monthly_sales_total }}</h2>
+            <h6 class="card-text">Total Sales This Month</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-info card-img-holder text-white">
+          <div class="card-body">
+            <img src="{% static 'Admin/assets/images/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
+            <h4 class="font-weight-normal mb-3">Monthly Purchase <i class="mdi mdi-bookmark-outline mdi-24px float-end"></i>
+            </h4>
+            <h2 class="mb-5">₹ {{ monthly_purchase_total }}</h2>
+            <h6 class="card-text">Total Purchases This Month</h6>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-success card-img-holder text-white">
+          <div class="card-body">
+            <img src="{% static 'Admin/assets/images/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
+            <h4 class="font-weight-normal mb-3">Available Products <i class="mdi mdi-diamond mdi-24px float-end"></i>
+            </h4>
+            <h2 class="mb-5">{{ product_count }}</h2>
+            <h6 class="card-text">Total Number of Available Products</h6>
+          </div>
+        </div>
+      </div>
+    </div>-
+
+    <!-- Row for Pie Chart and Calendar -->
+    <div class="row">
+      <!-- Pie Chart on the Left -->
+      <div class="col-lg-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Product Stock</h4>
+            <canvas id="stockPieChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Calendar on the Right -->
+      <div class="col-lg-6 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body p-0 d-flex">
+            <div id="inline-datepicker" class="datepicker datepicker-custom"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% include 'Admin/footer.html' %}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  var ctx = document.getElementById('stockPieChart').getContext('2d');
+  var stockPieChart = new Chart(ctx, {
+      type: 'pie',
+      data: {
+          labels: {{ labels|safe }},
+          datasets: [{
+              data: {{ data|safe }},
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.7)',
+                  'rgba(54, 162, 235, 0.7)',
+                  'rgba(255, 206, 86, 0.7)',
+                  'rgba(75, 192, 192, 0.7)',
+                  'rgba(153, 102, 255, 0.7)',
+                  'rgba(255, 159, 64, 0.7)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          responsive: true,
+          plugins: {
+              legend: {
+                  position: 'top',
+              }
+          }
+      }
+  });
+</script>

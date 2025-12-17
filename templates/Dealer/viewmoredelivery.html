@@ -1,0 +1,99 @@
+{% include 'Dealer/header.html' %}
+{% load static %}
+
+<br><br><br>
+<br><br><br><br><br>
+
+<div class="container">
+    <div class="card p-3">
+        <h3 class="table-title">Delivered Items - {{ delivery_master.deliverydate }}</h3>
+
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th>Sl No</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in delivered_items %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td class="product-name">{{ item.productid.productname }}</td>
+                    <td>{{ item.dealerquantity }}</td>
+                    <td>{{ item.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Display Total Amount -->
+        <div class="text-right total-amount">
+            <h5><strong>Total Amount: ₹{{ delivery_master.totalamount }}</strong></h5>
+        </div>
+
+        <a href="{% url 'viewdelivery' %}" class="back-button">BACK</a>
+    </div>
+</div>
+
+<style>
+/* Table Design */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    text-align: left;
+}
+
+/* Table Headers */
+.styled-table thead tr {
+    background-color: #e0e0e0;
+    font-weight: bold;
+    text-align: center;
+}
+
+.styled-table th {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+/* Row Styling */
+.styled-table tbody tr:nth-child(1) { background-color: #f5f5f5; }
+.styled-table tbody tr:nth-child(2) { background-color: #d8e8d1; }
+.styled-table tbody tr:nth-child(3) { background-color: #cde3fa; }
+.styled-table tbody tr:nth-child(4) { background-color: #ffe4b5; }
+.styled-table tbody tr:nth-child(5) { background-color: #e6ccff; }
+
+.styled-table tbody td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+/* Product Name Font Style */
+.product-name {
+    font-weight: bold;
+    color: #333;
+    font-family: "Arial", sans-serif;
+}
+
+/* Icon Image */
+.icon-img {
+    width: 24px;
+    height: 24px;
+    display: block;
+    margin: auto;
+}
+
+/* Total Amount Styling */
+.total-amount {
+    margin-top: 15px;
+    text-align: right;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+</style>

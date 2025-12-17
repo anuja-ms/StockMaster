@@ -1,0 +1,65 @@
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+<style>
+    body {
+        background-color: #dcdcdc; /* Light gray-blue background */
+    }
+</style>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+<!-- View Category Button (aligned to the right) -->
+            <div class="d-flex justify-content-center mt-4">
+                <a href="{% url 'viewcategory' %}"
+                   onclick="return confirm('Do you want to view categories?')"
+                   class="btn btn-primary w-10">View Categories</a>
+            </div>
+            <br><br>
+            <!-- Card Container -->
+            <div class="card shadow-lg p-4 rounded">
+
+                <!-- Card Title -->
+                <h3 class="text-center mb-4">Add Category</h3>
+
+                <!-- Form -->
+                <form action="{% url 'category_process' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Category Name Field -->
+                    <div class="form-group mb-4">
+                        <label for="categoryname" class="form-label">Category Name</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="bi bi-tag"></i>
+                            </div>
+                            <input type="text" name="categoryname" id="categoryname" class="form-control" placeholder="Enter Category Name" required>
+                        </div>
+                    </div>
+
+                    <!-- Category Image Field -->
+                    <div class="form-group mb-4">
+                        <label for="categoryimage" class="form-label">Category Image</label>
+                        <div class="input-group">
+                            <div class="input-group-text">
+                                <i class="bi bi-image"></i>
+                            </div>
+                            <input type="file" name="categoryimage" id="categoryimage" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">Add Category</button>
+                    </div>
+                </form>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+{% include 'Admin/footer.html' %}     

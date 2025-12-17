@@ -1,0 +1,106 @@
+{% include 'Admin/header.html' %}
+{% include 'Admin/sidebar.html' %}
+{% load static %}
+
+<style>
+    body {
+        background-color: lightblue;
+    }
+
+    .table-container {
+        max-width: 1200px; /* Increased width */
+        margin: 40px auto;
+        padding: 80px 50px; /* More horizontal padding */
+        background: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    }
+
+    .table-container h3 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 25px;
+        font-size: 26px;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    thead {
+        background-color: #4a90e2;
+        color: white;
+    }
+
+    th, td {
+        padding: 16px;
+        text-align: left;
+        border-bottom: 1px solid #dee2e6;
+        font-size: 16px;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f9fbfc;
+    }
+
+    tbody tr:hover {
+        background-color: #e3f2fd;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    tbody a {
+        color: #34495e;
+        font-weight: 600;
+        text-decoration: none;
+        display: inline-block;
+        transition: color 0.2s ease-in-out;
+    }
+
+    tbody a:hover {
+        color: #e74c3c;
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .table-container {
+            padding: 20px;
+        }
+
+        th, td {
+            font-size: 14px;
+            padding: 10px;
+        }
+    }
+</style>
+
+
+<div class="table-container">
+    <h3>🧾 Bill Details</h3>
+    <div class="table-responsive-sm">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Sl No</th>
+                    <th>Bill No & Delivery Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for res in result %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>
+                        <a href="{% url 'viewrequestmasterdetails' requestmasterid=res.requestmasterid %}">
+                            🧾 Bill No {{ res.requestmasterid }} — 📅 {{ res.deliverydate }}
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% include 'Admin/footer.html' %}
